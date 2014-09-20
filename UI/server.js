@@ -51,3 +51,9 @@ User.getAllUsers(function(err, users) {
 http.listen(app.get("port"), app.get("ipaddr"), function() {
   console.log("Server up and running. Go to http://" + app.get("ipaddr") + ":" + app.get("port"));
 });
+
+var ipaddress = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
+var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+http.listen( port, ipaddress, function() {
+    console.log((new Date()) + ' Server is listening on port 8080');
+});
