@@ -12,7 +12,7 @@ public class SQL {
 	 * here.
 	 */
 	public static final String SSN_USERS = "SSN_USERS";
-	public static final String USERS_MESSAGES = "USERS_MESSAGES";
+	/*public static final String USERS_MESSAGES = "USERS_MESSAGES";*/
 
 	/**
 	 * Query to check if a given table exists in the H2 database.
@@ -29,15 +29,16 @@ public class SQL {
 	 */
 	public static final String CREATE_USERS = "create table IF NOT EXISTS "
 			+ SSN_USERS + " ( user_id IDENTITY PRIMARY KEY,"
-			+ " first_name VARCHAR(100),"+ " last_name VARCHAR(100)," 
+			/*+ " first_name VARCHAR(100),"+ " last_name VARCHAR(100),"*/
 			+ " user_name VARCHAR(100),"+ " password VARCHAR(512),"
-			+ " online_status TINYINT(1)"+ " role VARCHAR(100)," 
-			+ " location VARCHAR(100)," +" salt VARCHAR(512) )";
-	
-	public static final String CREATE_MESSAGES = "create table IF NOT EXISTS "
+			/*+ " online_status TINYINT(1),"+ " role VARCHAR(100),"
+			+ " location VARCHAR(100)," */+" salt VARCHAR(512) )";
+
+
+	/*public static final String CREATE_MESSAGES = "create table IF NOT EXISTS "
 			+ USERS_MESSAGES + " ( user_id int FOREIGN KEY REFERENCES SSN_USERS(user_id), "
-			+ " pid IDENTIY PRIMARY KEY," + "message VARCHAR(255),"
-			+ " timestamp TIMESTAMP(8)";
+			+ " pid IDENTITY PRIMARY KEY," + "message VARCHAR(255),"
+			+ " timestamp TIMESTAMP(8)"; */
 
 	/**
 	 * Query to load all users in the system.
