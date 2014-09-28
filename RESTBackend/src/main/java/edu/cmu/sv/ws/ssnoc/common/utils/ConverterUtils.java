@@ -26,7 +26,8 @@ public class ConverterUtils {
 
 		User dto = new User();
 		dto.setUserName(po.getUserName());
-
+        dto.setEmergency_status(po.getEmergency_status());
+        dto.setOnline_status(po.getOnline_status());
 		return dto;
 	}
 
@@ -46,6 +47,8 @@ public class ConverterUtils {
 		UserPO po = new UserPO();
 		po.setUserName(dto.getUserName());
 		po.setPassword(dto.getPassword());
+        po.setOnline_status(dto.getOnline_status());
+        po.setEmergency_status(dto.getEmergency_status());
 
 		return po;
 	}
