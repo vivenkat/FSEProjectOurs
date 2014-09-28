@@ -41,9 +41,11 @@ public class DBUtils {
 	 */
 	protected static void createTablesInDB() throws SQLException {
 		Log.enter();
-		if (DB_TABLES_EXIST) {
-			return;
-		}
+//		if (DB_TABLES_EXIST) {
+//
+//		}
+        //System.out.println("entering createTablesInDB");
+
 
 		final String CORE_TABLE_NAME = SQL.SSN_USERS;
 
