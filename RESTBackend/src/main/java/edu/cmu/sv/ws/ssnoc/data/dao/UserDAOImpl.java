@@ -149,6 +149,21 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
         return status;
     }
 
+    public void updateOnline(String username) {
+
+        try (Connection conn = getConnection();
+            PreparedStatement stmt = conn.prepareStatement(SQL.UPDATE_ONLINE)) {
+            stmt.setString(1, username);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            handleException(e);
+        } finally {
+            Log.exit();
+        }
+    }
+
+
+
     /**
      * This method will save the information of the user into the database.
      *

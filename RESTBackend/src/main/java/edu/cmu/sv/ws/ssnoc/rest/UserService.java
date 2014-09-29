@@ -101,6 +101,8 @@ public class UserService extends BaseService {
             UserPO po = loadExistingUser(userName);
             if (!validateUserPassword(user.getPassword(), po)) {
                 throw new UnauthorizedUserException(userName);
+            } else {
+                DAOFactory.getInstance().getUserDAO().updateOnline(userName);
             }
         } catch (Exception e) {
             handleException(e);
