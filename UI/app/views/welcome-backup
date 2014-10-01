@@ -1,0 +1,44 @@
+doctype html
+html
+  include includes/head.jade
+  script(src='/js/jquery.cookie.js')
+  title SSNoC - Welcome
+  body
+    include includes/navbar.jade
+    div.container.text-center
+form(action='/status', method='post')
+    div.container.text.center
+        h3 Post Status :
+            select#test
+                option(value='OK') OK - I am OK, I do not need help.
+                option(value='Emergency') Emergency - I need help now, as this is a life threatening emergency!
+                option(value='Help') Help - I need help, but this is not a life threatening emergency.
+                option(value='Undefined') Undefined - I dont want to provide my status.
+            button(type="submit",class='btn btn-info btn-lg' id="submitstatus" onclick="checkStatus()") Submit
+    div.container.text.center
+        h4.text.center
+            table(border='1', style='width: 40%;', bgcolor='red')
+                tr
+                    th Username
+                    th Status
+
+                tr
+                    td a
+                    td
+
+                tr
+                    td b
+                    td
+
+    body(onload='$(\'#my-modal\').modal(\'show\');')
+    #my-modal.modal.fade
+        .modal-dialog
+            .modal-content
+                .modal-header
+                    button.close(type='button', data-dismiss='modal', aria-hidden='true') ◊
+                    h4.modal-title Welcome
+| Welcome to SSNOC.You can now use the status functionality.
+
+      br
+      h3 Welcome to Survivable Social Network on a Chip!!
+      a.btn.btn-info(href='/people') Let's start
