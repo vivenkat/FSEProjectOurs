@@ -33,10 +33,16 @@ module.exports = function(_, io, participants, passport, refreshAllUsers) {
         req.logIn(user, function(err) {
           if (err)
             return next(err);
-          participants.all.push({'userName' : user.local.name});
+          participants.all.push({'userName' : user.local.name, 'emergency' : user.local.status});
           return res.redirect('/welcome');
         });
       })(req, res, next);
+    },
+
+    postStatus : function (req, res, next) {
+      var user_name = req.session.passport.user.user_name;
+      User.setStatus(user_name, req.body.statusSelect, next);
+      res.redirect('/people');
     },
 
     getWelcome : function(req, res) {
