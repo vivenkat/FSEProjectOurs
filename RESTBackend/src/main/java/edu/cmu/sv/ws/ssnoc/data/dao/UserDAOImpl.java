@@ -195,4 +195,20 @@ public class UserDAOImpl extends BaseDAOImpl implements IUserDAO {
         }
     }
 
+    @Override
+    public void updateStatus(String username, int status) {
+        try (Connection conn = getConnection();
+            PreparedStatement stmt = conn.prepareStatement(SQL.UPDATE_STATUS)) {
+            stmt.setInt(1, status);
+            stmt.setString(2, username);
+
+            int rowCount = stmt.executeUpdate();
+        } catch (SQLException e) {
+            handleException(e);
+        } finally {
+            
+        }
+
+    }
+
 }

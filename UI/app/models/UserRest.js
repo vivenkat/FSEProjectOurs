@@ -9,6 +9,14 @@ function User(user_name, password){
   };
 }
 
+function User(user_name, password, st){
+  this.local = {
+    name : user_name,
+    password : password,
+    status : st
+  }
+}
+
 User.generateHash = function(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
@@ -31,7 +39,7 @@ User.getUser = function(user_name, callback) {
       return;
     }
     if (res.statusCode === 200) {
-      var user = new User(body.userName, body.password);
+      var user = new User(body.userName, body.password, body.emergency_status);
       callback(null, user);
       return;
     }
@@ -50,7 +58,7 @@ User.getAllUsers = function(callback) {
     }
     if (res.statusCode === 200) {
       var users = body.map(function(item, idx, arr){
-        return new User(item.userName, item.password);
+        return new User(item.userName, item.password, item.emergency_status);
       });
 
       users.sort(function(a,b) {
@@ -67,30 +75,6 @@ User.getAllUsers = function(callback) {
     }
   });
 };
-
-//start: added for testing status
-User.saveStatus = function (user_name, status, select_id) {
-    alert("here");
-	   var options = {
-	       url: rest_api.set_status + status + '/status',
-	       body : {userName: user_name, status:status},
-	       json: true
-	   };
-
-	   request.post(options, function(err, res, body) {
-	       console.log(res, body, err);
-	       if (err){
-	           callback(err,null);
-	           return;
-	       }
-	       if (res.statusCode !== 200 && res.statusCode !== 201) {
-	           callback(res.body, null);
-	           return;
-	       }
-	       return;
-	   });
-	}
-//end
 
 User.saveNewUser = function(user_name, password, callback) {
   var options = {
@@ -114,31 +98,27 @@ User.saveNewUser = function(user_name, password, callback) {
   });
 };
 
-//start: added for testing status
-User.postStatus = function(user_name, callback) {
-	   var options = {
-	       url : rest_api.set_status + '/status',
-	       body : {userName: user_name},
-	       json: true
-	   };
+User.setStatus = function(user_name, status, callback) {
+  var options = {
+    url : rest_api.save_status + status + '/status',
+    body : {'userName' : user_name},
+    json : true
+  };
 
-	   request.post(options, function(err, res, body) {
-	       console.log(res, body, err);
-	       if (err){
-	           callback(err,null);
-	           return;
-	       }
-	       if (res.statusCode !== 200 && res.statusCode !== 201) {
-	           callback(res.body, null);
-	           return;
-	       }
-	       var new_user = new User(body.userName, password, undefined);
+  request.post(options, function(err, res, body) {
+    if (err){
+      callback(err,null);
+      return;
+    }
+    if (res.statusCode !== 200 && res.statusCode !== 201) {
+      callback(res.body, null);
+      return;
+    }
+    callback(null, status);
+    return;
+  });
 
-	       callback(null, new_user);
-	       return;
-	   });
-	};
-	
-	//end
+  callback(true);
+};
 
 module.exports = User;

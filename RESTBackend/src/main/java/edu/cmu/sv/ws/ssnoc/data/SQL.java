@@ -127,4 +127,6 @@ public class SQL {
     public static final String UPDATE_ONLINE = "UPDATE " + SSN_USERS + " SET online_status=1 WHERE user_name=?";
 
     public static final String UPDATE_OFFLINE = "UPDATE " + SSN_USERS + " SET online_status=0 WHERE user_name=?";
+
+    public static final String UPDATE_STATUS = "UPDATE " + SSN_USERS + " SET emergency_status=? WHERE user_name=?";
 }

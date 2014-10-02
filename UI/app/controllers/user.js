@@ -58,20 +58,18 @@ module.exports = function(_, io, participants, passport, refreshAllUsers) {
         req.logIn(user, function(err) {
           if (err)
             return next(err);
-          participants.all.push({'userName' : user.local.name});
+          participants.all.push({'userName' : user.local.name, 'emergency' : user.local.status});
           return res.redirect('/welcome');
         });
       })(req, res, next);
     },
 
-    //start: added for testing status
-    saveStatus : function(req, res) {
-        var document = req.param('document');
-        var userName = req.session.passport.user.user_name;
-        var select_id = document.getElementById("test").value;
-        User.saveStatus(userName, select_id);
+    postStatus : function (req, res, next) {
+      var user_name = req.session.passport.user.user_name;
+      User.setStatus(user_name, req.body.statusSelect, next);
+      res.redirect('/people');
     },
-    //end
+
     getWelcome : function(req, res) {
       res.render('welcome', {title: "Hello " + req.session.passport.user.user_name + " !!"} );
     }
