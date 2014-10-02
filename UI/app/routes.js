@@ -10,12 +10,12 @@ module.exports = function(app, _, io, participants, passport) {
   app.post("/status", user_controller.postStatus);
 
   app.get("/welcome", isLoggedIn, user_controller.getWelcome);
-
+  
   app.get("/user", isLoggedIn, user_controller.getUser);
   app.get('/signup', user_controller.getSignup);
   app.get("/logout", isLoggedIn, user_controller.getLogout);
   app.post("/login", passport.authenticate('local-login', {
-    successRedirect : '/people',
+    successRedirect : '/welcome',
     failureRedirect : '/',
     failureFlash: true
   }));
