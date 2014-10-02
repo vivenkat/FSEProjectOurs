@@ -121,7 +121,7 @@ public class SQL {
      * Query to insert a row into the users table.
      */
     public static final String INSERT_USER = "insert into " + SSN_USERS
-            + " (user_name, password, online_status, emergency_status, salt) values (?, ?, 0, 1, ?)";
+            + " (user_name, password, online_status, emergency_status, salt) values (?, ?, ?, ?, ?)";
 
 
     public static final String UPDATE_ONLINE = "UPDATE " + SSN_USERS + " SET online_status=1 WHERE user_name=?";

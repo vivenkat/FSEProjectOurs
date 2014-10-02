@@ -7,6 +7,17 @@ function init() {
 
   window.my_name = '';
 
+  Array.prototype.sortOn = function(key){
+	    this.sort(function(a, b){
+	        if(a[key] < b[key]){
+	            return -1;
+	        }else if(a[key] > b[key]){
+	            return 1;
+	        }
+	        return 0;
+	    });
+	}
+  
   function updateParticipants(participants) {
     $('#participants_online').html('');
     $('#participants_offline').html('');
@@ -21,7 +32,7 @@ function init() {
     }
     keys = Object.keys(map);
     keys.sort();
-
+    
     for (var i = 0; i < keys.length; i++) {
       var name = keys[i];
       var img_ele = '<img src="/img/photo4.png" height=40/>';
@@ -31,7 +42,7 @@ function init() {
       var dropdown_ele = '<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".' + name + '">' + dropdown_symbol + '</div>';
 
       var info_ele = '<div class="row user-row search_item">' + photo_ele + name_ele + dropdown_ele + '</div>';
-      var detail_ele = '<div class="row user-info ' + name + '"><a class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-3 col-sm-offset-3 col-md-offset-3 col-lg-offset-3">Wanna do something?</a><hr/></div></div>';
+      var detail_ele = '<div class="row user-info ' + name + '"><a class="btn btn-info col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xs-offset-3 col-sm-offset-3 col-md-offset-3 col-lg-offset-3">Wanna do somethingsefsef?</a><hr/></div></div>';
       if (map[name].sId === sessionId || name === my_name) {
       } else {
         $('#participants_online').append(info_ele);
@@ -39,6 +50,8 @@ function init() {
       }
     }
 
+    participants.all.sortOn('userName');
+    
     participants.all.forEach(function(userObj) {
       if (map[userObj.userName] == undefined) {
         var img_ele = '<img class="img-circle" src="/img/photo4.png" height=40/>';

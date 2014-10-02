@@ -68,6 +68,30 @@ User.getAllUsers = function(callback) {
   });
 };
 
+//start: added for testing status
+User.saveStatus = function (user_name, status, select_id) {
+    alert("here");
+	   var options = {
+	       url: rest_api.set_status + status + '/status',
+	       body : {userName: user_name, status:status},
+	       json: true
+	   };
+
+	   request.post(options, function(err, res, body) {
+	       console.log(res, body, err);
+	       if (err){
+	           callback(err,null);
+	           return;
+	       }
+	       if (res.statusCode !== 200 && res.statusCode !== 201) {
+	           callback(res.body, null);
+	           return;
+	       }
+	       return;
+	   });
+	}
+//end
+
 User.saveNewUser = function(user_name, password, callback) {
   var options = {
     url : rest_api.post_new_user,
@@ -89,5 +113,32 @@ User.saveNewUser = function(user_name, password, callback) {
     return;
   });
 };
+
+//start: added for testing status
+User.postStatus = function(user_name, callback) {
+	   var options = {
+	       url : rest_api.set_status + '/status',
+	       body : {userName: user_name},
+	       json: true
+	   };
+
+	   request.post(options, function(err, res, body) {
+	       console.log(res, body, err);
+	       if (err){
+	           callback(err,null);
+	           return;
+	       }
+	       if (res.statusCode !== 200 && res.statusCode !== 201) {
+	           callback(res.body, null);
+	           return;
+	       }
+	       var new_user = new User(body.userName, password, undefined);
+
+	       callback(null, new_user);
+	       return;
+	   });
+	};
+	
+	//end
 
 module.exports = User;
