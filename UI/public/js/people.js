@@ -35,10 +35,19 @@ function init() {
     
     for (var i = 0; i < keys.length; i++) {
       var name = keys[i];
-      var emergency = participants.online[map[name].sId].emergency;
+      var emergency = participants.online[map[name].sId].status;
+      if (emergency == '1') {
+          emergency = 'okay';
+        } else if (emergency == '2') {
+          emergency = 'help';
+        } else if (emergency == '3') {
+          emergency = 'EMERGENCY';
+        } else {
+          emergency = 'OTHER';
+        }
       var img_ele = '<img src="/img/photo4.png" height=40/>';
       var photo_ele = '<div class="col-xs-3 col-sm-2 col-md-1 col-lg-1"><img src="/img/green-dot.png" height=10/><br/>'+img_ele + '</div>';
-      var name_ele = '<div class="col-xs-8 col-sm-9 col-md-10 col-lg-10"><strong>' + name + emergency +  +'</strong></div>';
+      var name_ele = '<div class="col-xs-8 col-sm-9 col-md-10 col-lg-10"><strong>username: ' + name + 'status: ' + emergency + '</strong></div>';
       var dropdown_symbol = map[name].sId === sessionId ? '':'<i class="glyphicon glyphicon-chevron-down text-muted"></i>';
       var dropdown_ele = '<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for=".' + name + '">' + dropdown_symbol + '</div>';
 
@@ -59,14 +68,14 @@ function init() {
         var emergency = userObj.emergency;
 
         if (emergency == '1') {
-          emergency = 'okay';
-        } else if (emergency == '2') {
-          emergency = 'help';
-        } else if (emergency == '3') {
-          emergency = 'EMERGENCY';
-        } else {
-          emergency = 'OTHER';
-        }
+            emergency = 'okay';
+          } else if (emergency == '2') {
+            emergency = 'help';
+          } else if (emergency == '3') {
+            emergency = 'EMERGENCY';
+          } else {
+            emergency = 'OTHER';
+          }
 
         var img_ele = '<img class="img-circle" src="/img/photo4.png" height=40/>';
         var photo_ele = '<div class="offline col-xs-3 col-sm-2 col-md-1 col-lg-1"><img src="/img/grey-dot.png" height=10/><br/>'+img_ele + '</div>';

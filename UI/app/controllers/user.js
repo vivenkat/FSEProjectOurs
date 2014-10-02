@@ -50,7 +50,7 @@ module.exports = function(_, io, participants, passport, refreshAllUsers) {
     	  res.redirect('/signup');
     	  return;
       }
-      passport.authenticate('local-signup', function(err, user, info) {
+      passport.authenticate('local-signup', function(err, user, isNewUser, info) {
         if (err)
           return next(err);
         if (!user)
@@ -59,6 +59,9 @@ module.exports = function(_, io, participants, passport, refreshAllUsers) {
           if (err)
             return next(err);
           participants.all.push({'userName' : user.local.name, 'emergency' : user.local.status});
+          if (!isNewUser){
+        	  req.flash('welcomeMessage','You have already signed up. Welcome back! Haha!');
+          }
           return res.redirect('/welcome');
         });
       })(req, res, next);
@@ -66,12 +69,28 @@ module.exports = function(_, io, participants, passport, refreshAllUsers) {
 
     postStatus : function (req, res, next) {
       var user_name = req.session.passport.user.user_name;
-      User.setStatus(user_name, req.body.statusSelect, next);
-      res.redirect('/people');
+      User.setStatus(user_name, req.body.statusSelect, function(error, status) {
+    	  if (error) {
+    		  next(error);
+    	  } else {
+    		  for (var sId in participants.online) {
+    		      var userName = participants.online[sId].userName;
+    		      if (userName == user_name) {
+    		          participants.online[sId] = {'userName' : user_name, 'status': status};
+    		      }
+    		  }
+    		  io.sockets.emit("newConnection", {participants: participants});
+    		  res.redirect('/people');
+    	  }
+      });
     },
 
     getWelcome : function(req, res) {
-      res.render('welcome', {title: "Hello " + req.session.passport.user.user_name + " !!"} );
+     res.render('welcome', {
+    	 title: "Hello " + req.session.passport.user.user_name + " !!",
+    	 message: req.flash('welcomeMessage')
+     } );
+     
     }
   };
 };
