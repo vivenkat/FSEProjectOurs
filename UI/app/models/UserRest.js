@@ -85,15 +85,19 @@ User.saveNewUser = function(user_name, password, callback) {
 
   request.post(options, function(err, res, body) {
     if (err){
-      callback(err,null);
+      callback(err,null, false);
       return;
     }
     if (res.statusCode !== 200 && res.statusCode !== 201) {
-      callback(res.body, null);
+      callback(res.body, null, false);
       return;
     }
     var new_user = new User(body.userName, password, undefined);
-    callback(null, new_user);
+    if (res.statusCode === 200) {
+    	callback(null, new_user, false);
+    } else if (res.statusCode === 201) {
+    	callback(null, new_user, true);
+    }
     return;
   });
 };
@@ -117,8 +121,6 @@ User.setStatus = function(user_name, status, callback) {
     callback(null, status);
     return;
   });
-
-  callback(true);
 };
 
 module.exports = User;

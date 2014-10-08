@@ -20,10 +20,10 @@ module.exports = function(passport) {
   },
   function(req, name, password, done) {
     process.nextTick(function() {
-      User.saveNewUser(name, password, function(err, new_user) {
+      User.saveNewUser(name, password, function(err, new_user, isNew) {
         if (err)
-          return done(null, false, req.flash('signupMessage', 'Signup failed due to: ' + err));
-        return done(null, new_user);
+          return done(null, null, false, req.flash('signupMessage', 'Signup failed due to: ' + err));
+        return done(null, new_user, isNew);
       });
     });
   }));
