@@ -67,6 +67,13 @@ module.exports = function(_, io, participants, passport, refreshAllUsers) {
     postStatus : function (req, res, next) {
       var user_name = req.session.passport.user.user_name;
       User.setStatus(user_name, req.body.statusSelect, next);
+      for (var sId in participants.online){
+        var check = participants.online[sId].userName;
+          
+        if (check == user_name){
+          participants.online[sId].status = req.body.statusSelect;
+        }
+      }
       res.redirect('/people');
     },
 

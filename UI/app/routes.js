@@ -34,7 +34,7 @@ function refreshAllUsers(participants, callback) {
   participants.all = [];
   User.getAllUsers(function(err, users) {
     users.forEach(function(user) {
-      participants.all.push({'userName' : user.local.name, 'emergency' : 'ok'});
+      participants.all.push({'userName' : user.local.name, 'emergency' : user.local.status});
     });
     callback();
   });

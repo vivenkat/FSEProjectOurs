@@ -65,7 +65,7 @@ function init() {
         } else if (emergency == '3') {
           emergency = 'EMERGENCY';
         } else {
-          emergency = 'OTHER';
+          emergency = 'UNDEFINED';
         }
 
         var img_ele = '<img class="img-circle" src="/img/photo4.png" height=40/>';
