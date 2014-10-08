@@ -14,6 +14,7 @@ public class SQL {
     public static final String SSN_USERS = "SSN_USERS";
     public static final String SSN_STATUS = "SSN_STATUS";
     public static final String SSN_MESSAGES = "SSN_MESSAGES";
+    public static final String PRIVATE_MESSAGES = "PRIVATE_MESSAGES";
 	/*public static final String USERS_MESSAGES = "USERS_MESSAGES";*/
 
     /**
@@ -70,10 +71,10 @@ public class SQL {
     public static final String CREATE_MESSAGES = "CREATE TABLE IF NOT EXISTS "+ SSN_MESSAGES +" (" +
             "pid integer NOT NULL,"+
             "message varchar(255),"+
-            "uid integer,"+
+            "author varchar(255),"+
             "timestamp timestamp,"+
-            "PRIMARY KEY (pid),"+
-            "FOREIGN KEY (uid) REFERENCES user(uid)"+
+            "AUTO_INCREMENT PRIMARY KEY (pid),"+
+            "FOREIGN KEY (author) REFERENCES SSN_USERS(user_name)"+
             ");";
 
     public static final String CREATE_STATUS = "CREATE TABLE emergency_status (" +
@@ -84,18 +85,12 @@ public class SQL {
             "FOREIGN KEY (uid) REFERENCES user(uid)" +
             ");";
 
-//	public static final String CREATE_USERS = "create table IF NOT EXISTS "
-//			+ SSN_USERS + " ( user_id IDENTITY PRIMARY KEY,"
-//			/*+ " first_name VARCHAR(100),"+ " last_name VARCHAR(100),"*/
-//			+ " user_name VARCHAR(100),"+ " password VARCHAR(512),"
-//			/*+ " online_status TINYINT(1),"+ " role VARCHAR(100),"
-//			+ " location VARCHAR(100)," */+" salt VARCHAR(512) )";
-
-
-	/*public static final String CREATE_MESSAGES = "create table IF NOT EXISTS "
-			+ USERS_MESSAGES + " ( user_id int FOREIGN KEY REFERENCES SSN_USERS(user_id), "
-			+ " pid IDENTITY PRIMARY KEY," + "message VARCHAR(255),"
-			+ " timestamp TIMESTAMP(8)"; */
+    public static final String CREATE_PM = "CREATE TABLE " + PRIVATE_MESSAGES + " (" +
+            "content varchar(512)," +
+            "author varchar(255)," +
+            "target varchar(255)," +
+            "postedAt timestamp," +
+            "messageId smallint NOT NULL AUTO_INCREMENT PRIMARY KEY);";
 
     /**
      * Query to load all users in the system.
@@ -114,6 +109,26 @@ public class SQL {
             + " from "
             + SSN_USERS
             + " where UPPER(user_name) = UPPER(?)";
+
+    public static final String GET_UID_BY_USERNAME = "select user_id from " + SSN_USERS +
+            " where user_name = ?";
+
+    public static final String GET_ALL_PUBLIC_MESSAGES = "select * from " + SSN_MESSAGES;
+
+    public static final String SEND_PRIVATE_MESSAGE = "insert into " + PRIVATE_MESSAGES +
+            " (content, author, target, postedAt) values (?, ?, ?, ?)";
+
+    public static final String GET_PM_BY_USER_ID = "select content from " + PRIVATE_MESSAGES +
+            " where author = ? and target = ? ORDER BY timestamp ASC";
+
+    public static final String GET_CHAT_BUDDIES = "select target from " + PRIVATE_MESSAGES +
+            " where author = ? and (author <> target)";
+
+    public static final String GET_MESSAGE_BY_ID = "select content from " + PRIVATE_MESSAGES +
+            " where messageId = ?";
+
+    public static final String POST_ON_WALL = "insert into " + SSN_MESSAGES +
+            "(message, author, timestamp) values (?,?,?)";
 
     public static final String FIND_STATUS_BY_NAME = "select emergency_status from SSN_USERS where UPPER(user_name) = UPPER(?)";
 
