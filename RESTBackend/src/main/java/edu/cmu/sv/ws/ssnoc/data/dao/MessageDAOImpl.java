@@ -10,7 +10,6 @@ import java.util.List;
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.data.SQL;
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
-import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
 
 /**
  * DAO implementation for saving User information in the H2 database.
@@ -118,7 +117,7 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
         Log.enter(stmt);
 
         if (stmt == null) {
-            Log.warn("Inside processResults method with NULL statement object.");
+            Log.warn("Inside processMessageById method with NULL statement object.");
             return null;
         }
 
@@ -146,7 +145,7 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
         Log.enter(stmt);
 
         if (stmt == null) {
-            Log.warn("Inside processResults method with NULL statement object.");
+            Log.warn("Inside processMessageById method with NULL statement object.");
             return null;
         }
 
@@ -157,9 +156,9 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
                 MessagePO po = new MessagePO();
                 po = new MessagePO();
                 po.setContent(rs.getString(1));
-                po.setAuthor(rs.getString(2));
-                po.setTarget(rs.getString(3));
-                po.setTimestamp(rs.getTimestamp(4).toString());
+//                po.setAuthor(rs.getString(2));
+//                po.setTarget(rs.getString(3));
+//                po.setTimestamp(rs.getTimestamp(4).toString());
                 messages.add(po);
             }
         } catch (SQLException e) {
@@ -176,7 +175,46 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
      *
      * @return - List of messages.
      */
-    List<String> loadChatBuddies(String author);
+    public List<String> loadChatBuddies(String author){
+        if (author == null) {
+            Log.warn("Inside findByName method with NULL author.");
+            return null;
+        }
+
+        List<String> po = null;
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn
+                     .prepareStatement(SQL.GET_CHAT_BUDDIES)) {
+            stmt.setString(1, author.toUpperCase());
+            po = processChatBuddies(stmt);
+        } catch (SQLException e) {
+            handleException(e);
+        }
+        return po;
+    }
+
+    private List<String> processChatBuddies(PreparedStatement stmt) {
+        Log.enter(stmt);
+
+        if (stmt == null) {
+            Log.warn("Inside processChatBuddies method with NULL statement object.");
+            return null;
+        }
+
+        Log.debug("Executing stmt = " + stmt);
+        List<String> users = new ArrayList<String>();
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                users.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            handleException(e);
+        } finally {
+            Log.exit(users);
+        }
+
+        return users;
+    }
 
     /**
      * This method will load all the users in the
@@ -184,7 +222,51 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
      *
      * @return - List of messages.
      */
-    String loadMessageById(int id);
+    public String loadMessageById(int id){
+        Log.enter(id);
+
+//        if (id == null) {
+//            Log.warn("Inside loadMessageById method with NULL id.");
+//            return null;
+//        }
+
+        MessagePO po = null;
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn
+                     .prepareStatement(SQL.GET_MESSAGE_BY_ID)) {
+            stmt.setInt(1, id);
+
+            po = processMessageById(stmt);
+        } catch (SQLException e) {
+            handleException(e);
+            Log.exit(po);
+        }
+
+        return po.getContent();
+    }
+
+    private MessagePO processMessageById(PreparedStatement stmt) {
+        Log.enter(stmt);
+
+        if (stmt == null) {
+            Log.warn("Inside processMessageById method with NULL statement object.");
+            return null;
+        }
+
+        Log.debug("Executing stmt = " + stmt);
+        MessagePO po = new MessagePO();
+        try (ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                po.setContent(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            handleException(e);
+        } finally {
+            Log.exit(po);
+        }
+
+        return po;
+    }
 
 
 }
