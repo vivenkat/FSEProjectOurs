@@ -1,6 +1,7 @@
 package edu.cmu.sv.ws.ssnoc.data.dao;
 
 import java.sql.Connection;
+import java.sql.Timestamp;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -10,6 +11,7 @@ import java.util.List;
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.data.SQL;
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
+import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 
 /**
  * DAO implementation for saving User information in the H2 database.
@@ -34,7 +36,7 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
                  PreparedStatement stmt = conn.prepareStatement(SQL.POST_ON_WALL)) {
                 stmt.setString(1, messagePO.getContent());
                 stmt.setString(2, messagePO.getAuthor());
-                stmt.setString(3, messagePO.getTimestamp());
+                stmt.setTimestamp(3, Timestamp.valueOf(messagePO.getTimestamp()));
                 int rowCount = stmt.executeUpdate();
                 Log.trace("Statement executed, and " + rowCount + " rows inserted.");
             } catch (SQLException e) {
@@ -92,17 +94,14 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
      */
     public List<MessagePO> loadPrivateMessages(String author, String target) {
 
-        if (target == null || author == null) {
-            Log.warn("Inside findByName method with NULL userName.");
-            return null;
-        }
-
         List<MessagePO> po = null;
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn
                      .prepareStatement(SQL.GET_PM_BY_USER_ID)) {
-            stmt.setString(1, author.toUpperCase() + " OR " + target.toUpperCase());
-            stmt.setString(2, target.toUpperCase() + " OR " + author.toUpperCase());
+            stmt.setString(1, author);
+            stmt.setString(2, target);
+            stmt.setString(3, target);
+            stmt.setString(4, author);
 
             po = processPrivateResults(stmt);
         } catch (SQLException e) {
@@ -156,9 +155,9 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
                 MessagePO po = new MessagePO();
                 po = new MessagePO();
                 po.setContent(rs.getString(1));
-//                po.setAuthor(rs.getString(2));
-//                po.setTarget(rs.getString(3));
-//                po.setTimestamp(rs.getTimestamp(4).toString());
+                po.setAuthor(rs.getString(2));
+                po.setTarget(rs.getString(3));
+                po.setTimestamp(rs.getTimestamp(4).toString());
                 messages.add(po);
             }
         } catch (SQLException e) {
@@ -175,25 +174,31 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
      *
      * @return - List of messages.
      */
-    public List<String> loadChatBuddies(String author){
+    public List<UserPO> loadChatBuddies(String author){
         if (author == null) {
             Log.warn("Inside findByName method with NULL author.");
             return null;
         }
 
-        List<String> po = null;
+
+        System.out.print("LOADCHATB 1");
+
+        List<UserPO> po = null;
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn
                      .prepareStatement(SQL.GET_CHAT_BUDDIES)) {
-            stmt.setString(1, author.toUpperCase());
+            stmt.setString(1, author);
             po = processChatBuddies(stmt);
         } catch (SQLException e) {
             handleException(e);
         }
+
+
+        System.out.print("LOADCHATB 2");
         return po;
     }
 
-    private List<String> processChatBuddies(PreparedStatement stmt) {
+    private List<UserPO> processChatBuddies(PreparedStatement stmt) {
         Log.enter(stmt);
 
         if (stmt == null) {
@@ -202,10 +207,12 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
         }
 
         Log.debug("Executing stmt = " + stmt);
-        List<String> users = new ArrayList<String>();
+        List<UserPO> users = new ArrayList<UserPO>();
         try (ResultSet rs = stmt.executeQuery()) {
             while (rs.next()) {
-                users.add(rs.getString(1));
+                UserPO po = new UserPO();
+                po.setUserName(rs.getString(1));
+                users.add(po);
             }
         } catch (SQLException e) {
             handleException(e);
