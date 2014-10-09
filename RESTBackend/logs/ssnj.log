@@ -1,0 +1,7 @@
+2014-09-18 19:49:27,573 TRACE e.c.s.w.s.d.u.DBUtils [main] Enter - method : createTablesInDB
+2014-09-18 19:49:27,576 INFO e.c.s.w.s.d.u.ConnectionPoolFactory [main] Creating a new ConnectionPoolFactory singleton instance.
+2014-09-18 19:49:27,577 INFO e.c.s.w.s.d.u.H2ConnectionPoolImpl [main] Initializing the connection pool ... 
+2014-09-18 19:49:28,279 TRACE e.c.s.w.s.c.u.PropertyUtils [main] Loading properties files ...
+2014-09-18 19:49:28,280 WARN e.c.s.w.s.c.u.PropertyUtils [main] !!! Could not find banned user names in the properties files !!!
+2014-09-18 19:49:28,308 INFO e.c.s.w.s.d.u.H2ConnectionPoolImpl [main] Connection pool initialized successfully.
+2014-09-18 19:49:58,314 ERROR e.c.s.w.s.r.SSNoCAppInitializer [main] Error in method: initOops :( We ran into an error when trying to intialize database. Please check the trace for more details. ## java.sql.SQLException: Timeout of 30000ms encountered waiting for connection.
