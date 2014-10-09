@@ -10,6 +10,7 @@ import java.util.List;
 import edu.cmu.sv.ws.ssnoc.common.logging.Log;
 import edu.cmu.sv.ws.ssnoc.data.SQL;
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
+import edu.cmu.sv.ws.ssnoc.dto.User;
 
 /**
  * DAO implementation for saving User information in the H2 database.
@@ -175,7 +176,7 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
      *
      * @return - List of messages.
      */
-    public List<String> loadChatBuddies(String author){
+    public List<User> loadChatBuddies(String author){
         if (author == null) {
             Log.warn("Inside findByName method with NULL author.");
             return null;
@@ -185,7 +186,7 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn
                      .prepareStatement(SQL.GET_CHAT_BUDDIES)) {
-            stmt.setString(1, author.toUpperCase());
+            stmt.setString(1, author);
             po = processChatBuddies(stmt);
         } catch (SQLException e) {
             handleException(e);
@@ -193,7 +194,7 @@ public class MessageDAOImpl extends BaseDAOImpl implements IMessageDAO {
         return po;
     }
 
-    private List<String> processChatBuddies(PreparedStatement stmt) {
+    private List<User> processChatBuddies(PreparedStatement stmt) {
         Log.enter(stmt);
 
         if (stmt == null) {

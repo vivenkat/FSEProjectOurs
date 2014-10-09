@@ -2,6 +2,7 @@ package edu.cmu.sv.ws.ssnoc.data.dao;
 
 import java.util.List;
 import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
+import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 
 /**
  * Interface specifying the contract that all implementations will implement to
@@ -39,7 +40,7 @@ public interface IMessageDAO{
      *
      * @return - List of messages.
      */
-    List<String> loadChatBuddies(String author);
+    List<UserPO> loadChatBuddies(String author);
 
     /**
      * This method will load all the users in the
