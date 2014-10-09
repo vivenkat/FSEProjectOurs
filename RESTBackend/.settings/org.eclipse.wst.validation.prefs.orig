@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+disabled=06target
+eclipse.preferences.version=1
+=======
 DELEGATES_PREFERENCE=delegateValidatorList
 USER_BUILD_PREFERENCE=enabledBuildValidatorListorg.eclipse.jst.j2ee.internal.web.validation.UIWarValidator;org.eclipse.jst.j2ee.internal.classpathdep.ClasspathDependencyValidator;
 USER_MANUAL_PREFERENCE=enabledManualValidatorListorg.eclipse.jst.j2ee.internal.web.validation.UIWarValidator;org.eclipse.jst.j2ee.internal.classpathdep.ClasspathDependencyValidator;
@@ -8,7 +11,4 @@ eclipse.preferences.version=1
 override=false
 suspend=false
 vf.version=3
-=======
-disabled=06target
-eclipse.preferences.version=1
->>>>>>> my own files
+>>>>>>> 07d345af0396703e94389345a2f2e98fb437a60b
