@@ -2,6 +2,8 @@ package edu.cmu.sv.ws.ssnoc.common.utils;
 
 import edu.cmu.sv.ws.ssnoc.data.po.UserPO;
 import edu.cmu.sv.ws.ssnoc.dto.User;
+import edu.cmu.sv.ws.ssnoc.data.po.MessagePO;
+import edu.cmu.sv.ws.ssnoc.dto.Message;
 
 /**
  * This is a utility class used to convert PO (Persistent Objects) and View
@@ -52,4 +54,24 @@ public class ConverterUtils {
 
 		return po;
 	}
+
+    public static final Message convert(MessagePO po) {
+        Message dto = new Message();
+        dto.setAuthor(po.getAuthor());
+        dto.setContent(po.getContent());
+        dto.setTarget(po.getTarget());
+        dto.setTimestamp(po.getTimestamp());
+        dto.setPublic(po.getPublic());
+        return dto;
+    }
+
+    public static final MessagePO convert(Message dto) {
+        MessagePO po = new MessagePO();
+        po.setAuthor(dto.getAuthor());
+        po.setContent(dto.getContent());
+        po.setTarget(dto.getTarget());
+        po.setTimestamp(dto.getTimestamp());
+        po.setPublic(dto.getPublic());
+        return po;
+    }
 }

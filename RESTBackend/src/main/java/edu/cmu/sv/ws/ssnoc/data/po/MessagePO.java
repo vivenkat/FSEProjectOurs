@@ -12,7 +12,7 @@ public class MessagePO {
     private String timestamp;
     private String author;
     private String target;
-    private Boolean isPublic;
+    private boolean isPublic;
 
     public String getTarget() {
         return target;
@@ -48,11 +48,11 @@ public class MessagePO {
     }
 
     public boolean getPublic() {
-        return false;
+        return isPublic;
     }
 
     public void setPublic(boolean ifPublic) {
-        isPublic = ifPublic;
+        this.isPublic = ifPublic;
     }
 
     @Override

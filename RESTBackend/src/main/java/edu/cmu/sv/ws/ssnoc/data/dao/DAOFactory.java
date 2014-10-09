@@ -32,4 +32,5 @@ public class DAOFactory {
 		return new UserDAOImpl();
 	}
 
+    public IMessageDAO getMessageDAO() {return new MessageDAOImpl(); }
 }

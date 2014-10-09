@@ -69,12 +69,12 @@ public class SQL {
             "salt VARCHAR(512)  );";
 
     public static final String CREATE_MESSAGES = "CREATE TABLE IF NOT EXISTS "+ SSN_MESSAGES +" (" +
-            "pid integer NOT NULL,"+
+            "pid integer NOT NULL AUTO_INCREMENT,"+
             "message varchar(255),"+
             "author varchar(255),"+
             "timestamp timestamp,"+
-            "AUTO_INCREMENT PRIMARY KEY (pid),"+
-            "FOREIGN KEY (author) REFERENCES SSN_USERS(user_name)"+
+            "PRIMARY KEY (pid),"+
+            "FOREIGN KEY (author) REFERENCES public.SSN_USERS(user_name)"+
             ");";
 
     public static final String CREATE_STATUS = "CREATE TABLE emergency_status (" +
@@ -82,7 +82,6 @@ public class SQL {
             "help smallint," +
             "emergency smallint, " +
             "undefined smallint," +
-            "FOREIGN KEY (uid) REFERENCES user(uid)" +
             ");";
 
     public static final String CREATE_PM = "CREATE TABLE " + PRIVATE_MESSAGES + " (" +
@@ -118,11 +117,11 @@ public class SQL {
     public static final String SEND_PRIVATE_MESSAGE = "insert into " + PRIVATE_MESSAGES +
             " (content, author, target, postedAt) values (?, ?, ?, ?)";
 
-    public static final String GET_PM_BY_USER_ID = "select content from " + PRIVATE_MESSAGES +
-            " where author = ? and target = ? ORDER BY timestamp ASC";
+    public static final String GET_PM_BY_USER_ID = "select * from " + PRIVATE_MESSAGES +
+            " where (author = ? and target = ?) or (author = ? and target = ?) ORDER BY postedAt ASC";
 
     public static final String GET_CHAT_BUDDIES = "select target from " + PRIVATE_MESSAGES +
-            " where author = ? and (author <> target)";
+            " where author = ?";
 
     public static final String GET_MESSAGE_BY_ID = "select content from " + PRIVATE_MESSAGES +
             " where messageId = ?";
