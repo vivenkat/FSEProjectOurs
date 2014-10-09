@@ -24,3 +24,9 @@ html
           div.col-md-12.col-xs-12
             h3.text-center.offline Offline
             div.text-center#participants_offline
+      form(action='/status', method='post')
+        select(name='statusSelect')
+          option(value='1') Okay
+          option(value='2') Help
+          option(value='3') EMERGENCY!!!
+        button(type="submit" class="btn btn-info btn-lg" id="signupBtn") update status

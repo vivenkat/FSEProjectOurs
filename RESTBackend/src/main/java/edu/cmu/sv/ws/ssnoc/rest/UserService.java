@@ -101,6 +101,8 @@ public class UserService extends BaseService {
             UserPO po = loadExistingUser(userName);
             if (!validateUserPassword(user.getPassword(), po)) {
                 throw new UnauthorizedUserException(userName);
+            } else {
+                DAOFactory.getInstance().getUserDAO().updateOnline(userName);
             }
         } catch (Exception e) {
             handleException(e);
@@ -126,12 +128,13 @@ public class UserService extends BaseService {
         try {
             UserPO po = ConverterUtils.convert(user);
 
-            UserPO existingUser = dao.findByName(user.getUserName());
+            //UserPO existingUser = dao.findByName(user.getUserName());
             //UserPO po = loadExistingUser(userName);
             //user = ConverterUtils.convert(po);
             //status = loadStatus(userName);
-            po.setEmergency_status(Integer.parseInt(status));
-            dao.save(po);
+            //po.setEmergency_status(Integer.parseInt(status));
+            dao.updateStatus(po.getUserName(), Integer.parseInt(status));
+            //dao.save(po);
         } catch (Exception e) {
             handleException(e);
         }

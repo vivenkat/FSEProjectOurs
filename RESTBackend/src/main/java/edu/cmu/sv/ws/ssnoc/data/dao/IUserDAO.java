@@ -40,4 +40,8 @@ public interface IUserDAO {
 
     String getStatusByName(String userName);
 
+    void updateOnline(String userName);
+
+    void updateStatus(String userName, int status);
+
 }
