@@ -50,6 +50,7 @@ module.exports = function(_, io, participants, passport, refreshAllUsers) {
     	  res.redirect('/signup');
     	  return;
       }
+
       passport.authenticate('local-signup', function(err, user, isNewUser, info) {
         if (err)
           return next(err);

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
+<<<<<<< HEAD
 	<name>ssnoc</name>
+=======
+	<name>SSNoC-RESTful-backend</name>
+>>>>>>> 07d345af0396703e94389345a2f2e98fb437a60b
 	<comment></comment>
 	<projects>
 	</projects>

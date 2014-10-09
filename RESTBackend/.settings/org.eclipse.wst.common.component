@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+<<<<<<< HEAD
     <wb-module deploy-name="ssnoc">
+=======
+    <wb-module deploy-name="SSNoC-RESTful-backend">
+>>>>>>> 07d345af0396703e94389345a2f2e98fb437a60b
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+<<<<<<< HEAD
         <property name="context-root" value="ssnoc"/>
         <property name="java-output-path" value="/ssnoc/target/classes"/>
+=======
+        <property name="java-output-path" value="/SSNoC-RESTful-backend/target/classes"/>
+        <property name="context-root" value="SSNoC-RESTful-backend"/>
+>>>>>>> 07d345af0396703e94389345a2f2e98fb437a60b
     </wb-module>
 </project-modules>
